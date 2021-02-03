@@ -2,6 +2,37 @@ $(function () {
     let layer = layui.layer
     let form = layui.form
 
+
+    let str = location.search
+    str = str.substring(1)
+    // console.log(str)
+
+    artEdit()
+    // 加载编辑文章的方法
+    function artEdit() {
+        if (str !== null) {
+            // console.log(str)
+            // 向服务器发送请求
+            let id = str
+            $.ajax({
+                method: 'GET',
+                url: '/my/article/' + id,
+                success(res) {
+                    if (res.status !== 0) return layer.msg('获取文章列表失败！')
+                    setTimeout(() => {
+                        $('[name=title]').val(res.data.title)
+                        // $('[name=cate_id]').val(res.data.cate_id)
+                        $(`option[value=${res.data.cate_id}]`).prop('selected', true)
+                        form.render()
+                    }, 100)
+                    $('[name=content]').val(res.data.content)
+                    form.render()
+                }
+            })
+        }
+    }
+
+
     initCate()
     // 初始化富文本编辑器
     initEditor()
@@ -112,6 +143,9 @@ $(function () {
                 layer.msg('发表文章成功！')
                 // 发布文章成功后，跳转到文章列表页面
                 location.href = '/article/art_list.html'
+                // console.log($('[name=title]').val());
+                // console.log($('[name=cate_id]').val());
+                // console.log($('[name=content]').val());
             }
         })
 

@@ -161,6 +161,9 @@ $(function () {
 
     $('tbody').on('click', '.btn-edit', function () {
         // console.log('ok');
+        let cate_id = $(this).attr('data-id')
+        location.href='/article/art_pub.html?'+cate_id
 
     })
+
 })
